@@ -10,13 +10,69 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 
-    <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
-    <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
-  </head>
+    <style>
+    body#clear {
+      background-image: url("<%= asset_path('tenor.gif') %>");
+      background-repeat: no-repeat;
+      background-size: 100% 800px;
+    }
 
-  <body>
+    body#cloudy {
+      background-image: url("<%= asset_path('cloudy.gif') %>");
+      background-repeat: no-repeat;
+      background-size: 100% 800px;
+    }
+    body#rainy {
+      background-image: url("<%= asset_path('rainy.gif') %>");
+      background-repeat: no-repeat;
+      background-size: 100% 800px;
+    }
+    body#snowy {
+      background-image: url("<%= asset_path('snow.gif') %>");
+      background-repeat: no-repeat;
+      background-size: 100% 800px;
+    }
+    body#normal {
+      background-color: lightgray;
+    }
+    </style>
+
+    <%= stylesheet_link_tag    'application', media: 'all' %>
+    <%= javascript_include_tag 'application' %>
+  </head>
+  <% if @results[:weather_words] == "Clear" %>
+  <body id="clear">
     <div class="container">
       <%= yield %>
     </div>
   </body>
+
+  <% elsif @results[:weather_icon] == "http://icons.wxug.com/i/c/k/snow.gif" && @results[:weather_icon] != "http://icons.wxug.com/i/c/k/rain.gif" %>
+  <body id="snowy">
+    <div class="container">
+      <%= yield %>
+    </div>
+  </body>
+
+  <% elsif @results[:weather_icon] == "http://icons.wxug.com/i/c/k/rain.gif" %>
+  <body id="rainy">
+    <div class="container">
+      <%= yield %>
+    </div>
+  </body>
+
+  <% elsif @results[:weather_words] == "Partly Cloudy" || "Mostly Cloudy" || "Cloudy" && @results[:weather_icon] != "http://icons.wxug.com/i/c/k/snow.gif" %>
+  <body id="cloudy">
+    <div class="container">
+      <%= yield %>
+    </div>
+  </body>
+  <% else %>
+  <body id="normal">
+    <div class="container">
+      <%= yield %>
+    </div>
+  </body>
+  <% end %>
+
 </html>
